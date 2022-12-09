@@ -6,6 +6,7 @@ import deflyClient from "./defly";
 import exodusClient from "./exodus";
 import kmdClient from "./kmd";
 import walletconnectClient from "./walletconnect";
+import inkeyClient from "./inkeywallet";
 
 export const clients = {
   [PROVIDER_ID.KMD_WALLET]: kmdClient.init().catch((e) => {
@@ -15,6 +16,12 @@ export const clients = {
     }
   }),
   [PROVIDER_ID.PERA_WALLET]: peraWalletClient.init().catch((e) => {
+    if (typeof window !== "undefined") {
+      console.info("error initializing client", e);
+      return;
+    }
+  }),
+  [PROVIDER_ID.INKEY_WALLET]: inkeyClient.init().catch((e) => {
     if (typeof window !== "undefined") {
       console.info("error initializing client", e);
       return;

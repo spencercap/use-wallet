@@ -1,6 +1,7 @@
 export enum PROVIDER_ID {
   KMD_WALLET = "KMD Wallet",
   PERA_WALLET = "Pera Wallet",
+  INKEY_WALLET = "Inkey Wallet",
   MYALGO_WALLET = "MyAlgo Wallet",
   ALGO_SIGNER = "Algo Signer",
   DEFLY = "Defly",

@@ -2,6 +2,9 @@ import React from "react";
 import { useConnectWallet } from "../../index";
 import "./ConnectWallet.scss";
 
+// components
+import Wallet from "../Wallet/Wallet";
+
 type ConnectWalletProps = {
   foo?: string;
 };
@@ -63,6 +66,9 @@ export default function ConnectWallet(props: ConnectWalletProps) {
           </div>
         </div>
       ))}
+
+      {/* TODO remove this dev testing */}
+      <Wallet foo="bar" />
     </div>
   );
 }
