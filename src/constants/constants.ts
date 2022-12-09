@@ -4,6 +4,7 @@ export enum PROVIDER_ID {
   KMD = "kmd",
   PERA = "pera",
   MYALGO = "myalgo",
+  INKEY = "inkey",
   ALGOSIGNER = "algosigner",
   DEFLY = "defly",
   EXODUS = "exodus",

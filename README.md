@@ -6,6 +6,7 @@ React hooks for using Algorand compatible wallets with web applications.
 
 - [Pera](https://perawallet.app/)
 - [MyAlgo](https://wallet.myalgo.com/home)
+- [Inkey](https://inkey.ncc.la/)
 - [Defly](https://defly.app)
 - [AlgoSigner](https://www.purestake.com/technology/algosigner)
 - [Exodus](https://www.exodus.com)
@@ -29,7 +30,7 @@ yarn add @txnlab/use-wallet
 Install peer dependencies (if needed)
 
 ```bash
-yarn add algosdk @blockshake/defly-connect @perawallet/connect @randlabs/myalgo-connect @walletconnect/client algorand-walletconnect-qrcode-modal @json-rpc-tools/utils
+yarn add algosdk @blockshake/defly-connect @perawallet/connect @randlabs/myalgo-connect @walletconnect/client algorand-walletconnect-qrcode-modal @json-rpc-tools/utils @thencc/inkey-client-js
 ```
 
 ### NPM
@@ -41,12 +42,12 @@ npm install @txnlab/use-wallet
 Install peer dependencies (if needed)
 
 ```bash
-npm install algosdk @blockshake/defly-connect @perawallet/connect @randlabs/myalgo-connect @walletconnect/client algorand-walletconnect-qrcode-modal @json-rpc-tools/utils
+npm install algosdk @blockshake/defly-connect @perawallet/connect @randlabs/myalgo-connect @walletconnect/client algorand-walletconnect-qrcode-modal @json-rpc-tools/utils @thencc/inkey-client-js
 ```
 
 ### Set up the Wallet Provider
 
-In `app.js`, initialize the Wallet Provider so that the `useWallet` hook can be used in the child components, and use the `reconnectProviders` function to restore sessions for users returning to the app. 
+In `app.js`, initialize the Wallet Provider so that the `useWallet` hook can be used in the child components, and use the `reconnectProviders` function to restore sessions for users returning to the app.
 
 
 ```jsx
@@ -89,7 +90,7 @@ For more configuration options, see [Provider Configuration](#provider-configura
 
 ### Connect
 
-Map through the `providers` object to list the providers and enable users to connect. 
+Map through the `providers` object to list the providers and enable users to connect.
 
 ```jsx
 import React from "react";
@@ -297,7 +298,7 @@ const walletProviders = {
   }),
 };
 
-... 
+...
 
 <WalletProvider value={walletProviders}>
   ...
@@ -306,9 +307,9 @@ const walletProviders = {
 
 ## Static Imports
 
-By default, `use-wallet` dynamically imports all of the dependencies for the providiers, as well as `algosdk`, to reduce bundle size. 
+By default, `use-wallet` dynamically imports all of the dependencies for the providiers, as well as `algosdk`, to reduce bundle size.
 
-Some React frameworks, like [Remix](https://remix.run/), do not support dynamic imports. To get around this, those dependencies can be imported in your application and passed to the `useWallet` provider. See below for an example. 
+Some React frameworks, like [Remix](https://remix.run/), do not support dynamic imports. To get around this, those dependencies can be imported in your application and passed to the `useWallet` provider. See below for an example.
 
 ```jsx
 ...
@@ -329,6 +330,7 @@ const walletProviders = {
     algosdkStatic: algosdk,
     clientStatic: MyAlgoConnect,
   }),
+  // TODO add inkey here...
   [PROVIDER_ID.DEFLY]: defly.init({
     algosdkStatic: algosdk,
     clientStatic: DeflyWalletConnect,
@@ -374,7 +376,7 @@ Note: Frameworks like `next.js` already include polyfills. This step is required
 
     ```js
     const webpack = require("webpack");
-    
+
     module.exports = function override(config) {
       const fallback = config.resolve.fallback || {};
       Object.assign(fallback, {
@@ -444,7 +446,7 @@ In the root of your application, run:
 yarn link @txnlab/use-wallet
 ```
 
-### Symlink React 
+### Symlink React
 
 In the root of your application, run:
 ```bash
