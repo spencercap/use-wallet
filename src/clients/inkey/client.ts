@@ -68,12 +68,13 @@ class InkeyWalletClient extends BaseWallet {
   }
 
   async connect() {
-    // TODO return .address + .name/.username AND return as array
-    const inkeyAccount = await this.#client.inkeyConnect();
-    const accounts = [{
-      address: inkeyAccount.address,
-      name: 'TODO - return inkey username',
-    }];
+    const inkeyAccounts = await this.#client.inkeyConnect();
+    const accounts = inkeyAccounts.map(a => {
+      return {
+        address: a.address,
+        name: a.username
+      }
+    });
 
     if (accounts.length === 0) {
       throw new Error(
