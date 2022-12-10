@@ -16,6 +16,17 @@ import {
 import { InitParams, InkeyClientType, InkeyWalletClientConstructor } from "./types";
 import { ICON } from "./constants";
 
+// helpers
+export const arrayBufferToBase64 = (buffer: ArrayBufferLike) => {
+  var binary = '';
+  var bytes = new Uint8Array(buffer);
+  var len = bytes.byteLength;
+  for (var i = 0; i < len; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return window.btoa(binary);
+};
+
 class InkeyWalletClient extends BaseWallet {
   #client: InkeyClientType;
   network: Network;
@@ -138,7 +149,15 @@ class InkeyWalletClient extends BaseWallet {
     }, []);
 
     // Sign them with the client.
-    const result = await this.#client.inkeySignTxnsUint8Array(txnsToSign);
+
+    // both signing approaches work... (up to dev whether to convert from buff->b64 before or let inkey do it)
+    // const result = await this.#client.inkeySignTxnsUint8Array(txnsToSign);
+    // console.log('result', result);
+
+    const txnsAsStrB64 = txnsToSign.map((tBuff) => arrayBufferToBase64(tBuff));
+    // console.log('txnsAsStrB64', txnsAsStrB64);
+
+    const result = await this.#client.inkeySignTxns(txnsAsStrB64);
     console.log('result', result);
 
     if (!result.success) {
