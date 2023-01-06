@@ -1,8 +1,8 @@
-import type { createInkeyClient } from "@thencc/inkey-client-js";
+import type { createClient } from "@thencc/inkey-client-js";
 import type _algosdk from "algosdk";
 import type { AlgodClientOptions, Network } from "../../types";
 
-export type InkeyClientType = Awaited<ReturnType<typeof createInkeyClient>>;
+export type InkeyClientType = Awaited<ReturnType<typeof createClient>>;
 
 export type InkeyWalletClientConstructor = {
 	client: InkeyClientType;

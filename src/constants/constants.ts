@@ -11,9 +11,11 @@ export enum PROVIDER_ID {
   WALLETCONNECT = "walletconnect",
 }
 
-export const DEFAULT_NETWORK: Network = "mainnet";
+export const DEFAULT_NETWORK: Network = "testnet"; // "mainnet";
 
-export const DEFAULT_NODE_BASEURL = "https://mainnet-api.algonode.cloud";
+export const DEFAULT_NODE_BASEURL = "https://testnet-api.algonode.cloud";
+// https://testnet-api.algonode.cloud
+// https://mainnet-api.algonode.cloud
 
 export const DEFAULT_NODE_TOKEN = "";
 

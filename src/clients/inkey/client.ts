@@ -11,8 +11,8 @@ import {
   DecodedTransaction,
   DecodedSignedTransaction,
   Network,
+  Wallet,
 } from "../../types";
-// import type { createInkeyClient } from "@thencc/inkey-client-js";
 import { InitParams, InkeyClientType, InkeyWalletClientConstructor } from "./types";
 import { ICON } from "./constants";
 
@@ -58,7 +58,7 @@ class InkeyWalletClient extends BaseWallet {
   }: InitParams) {
     try {
 
-      const inkeyClient = clientStatic || await (await import("@thencc/inkey-client-js")).createInkeyClient({
+      const inkeyClient = clientStatic || await (await import("@thencc/inkey-client-js")).createClient({
         // src: clientOptions?.iFrameUrl
         src: 'http://127.0.0.1:5200'
       });
@@ -79,7 +79,9 @@ class InkeyWalletClient extends BaseWallet {
   }
 
   async connect() {
-    const inkeyAccounts = await this.#client.inkeyConnect();
+    const inkeyAccounts = await this.#client.connect();
+    console.log('inkeyAccounts', inkeyAccounts);
+
     const accounts = inkeyAccounts.map(a => {
       return {
         address: a.address,
@@ -104,13 +106,33 @@ class InkeyWalletClient extends BaseWallet {
     };
   }
 
-  async reconnect() {
-    console.warn('TODO inkey reconnect');
+  async reconnect(): Promise<Wallet | null> {
+    console.log('inkey reconnect')
     return null;
+
+    // const accounts = this.#client.accounts;
+
+    // if (!accounts) {
+    //   return null;
+    // }
+
+    // return {
+    //   ...InkeyWalletClient.metadata,
+    //   accounts: accounts.map((address: string, index: number) => ({
+    //     name: `Inkey Connect ${index + 1}`,
+    //     address,
+    //     providerId: InkeyWalletClient.metadata.id,
+    //   })),
+    // };
   }
 
   async disconnect() {
-    console.warn('TODO inkey disconnect');
+    try {
+      await this.#client.disconnect();
+    } catch (e) {
+      console.warn((e as Error).message);
+    }
+
     return;
   }
 
@@ -150,14 +172,14 @@ class InkeyWalletClient extends BaseWallet {
 
     // Sign them with the client.
 
-    // both signing approaches work... (up to dev whether to convert from buff->b64 before or let inkey do it)
-    // const result = await this.#client.inkeySignTxnsUint8Array(txnsToSign);
+    // FYI BOTH signing approaches work... (up to dev whether to convert from buff->b64 before or let inkey do it)
+    // const result = await this.#client.signTxnsUint8Array(txnsToSign);
     // console.log('result', result);
 
     const txnsAsStrB64 = txnsToSign.map((tBuff) => arrayBufferToBase64(tBuff));
     // console.log('txnsAsStrB64', txnsAsStrB64);
 
-    const result = await this.#client.inkeySignTxns(txnsAsStrB64);
+    const result = await this.#client.signTxns(txnsAsStrB64);
     console.log('result', result);
 
     if (!result.success) {
